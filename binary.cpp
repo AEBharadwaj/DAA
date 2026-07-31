@@ -1,30 +1,27 @@
 #include <iostream>
 using namespace std;
-
-// Iterative version
 int binarySearch(int arr[], int n, int target) {
     int low = 0;
     int high = n - 1;
 
     while (low <= high) {
-        int mid = low + (high - low) / 2;  // prevents overflow
+        int mid = low + (high - low) / 2;  
 
         if (arr[mid] == target)
-            return mid;                     // found
+            return mid;                     
 
         else if (arr[mid] < target)
-            low = mid + 1;                  // search right half
+            low = mid + 1;                  
 
         else
-            high = mid - 1;                 // search left half
+            high = mid - 1;                
     }
-    return -1;                              // not found
+    return -1;                              
 }
 
-// Recursive version
 int binarySearchRecursive(int arr[], int low, int high, int target) {
     if (low > high)
-        return -1;                          // base case — not found
+        return -1;                          
 
     int mid = low + (high - low) / 2;
 
@@ -43,14 +40,14 @@ int main() {
     int n = 7;
     int target = 10;
 
-    // Iterative
+    
     int result = binarySearch(arr, n, target);
     if (result != -1)
         cout << "Iterative: Found at index " << result << endl;
     else
         cout << "Iterative: Not found" << endl;
 
-    // Recursive
+    
     int result2 = binarySearchRecursive(arr, 0, n - 1, target);
     if (result2 != -1)
         cout << "Recursive: Found at index " << result2 << endl;
