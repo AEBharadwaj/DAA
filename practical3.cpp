@@ -1,49 +1,63 @@
 #include <iostream>
 using namespace std;
 
-long long factorialIterative(int n) {
-    if (n < 0) {
-        cout << "Negative — undefined" << endl;
-        return -1;
-    }
-    if (n == 0 || n == 1) return 1;
-
-    long long result = 1;
-    for (int i = 2; i <= n; i++)
-        result *= i;
-
-    return result;
+void swap(int arr[], int i, int j) {
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
 }
 
-long long factorialRecursive(int n) {
-    if (n < 0) {
-        cout << "Negative — undefined" << endl;
-        return -1;
-    }
-    if (n == 0 || n == 1) return 1;  
+void heapifyDown(int arr[], int n, int i) {
+    int largest = i;           
+    int left = 2 * i + 1;     
+    int right = 2 * i + 2;   
 
-    return n * factorialRecursive(n - 1);  
+    if (left < n && arr[left] > arr[largest])
+        largest = left;
+
+    
+    if (right < n && arr[right] > arr[largest])
+        largest = right;
+
+    if (largest != i) {
+        swap(arr, i, largest);
+        heapifyDown(arr, n, largest);
+    }
+}
+
+void buildMaxHeap(int arr[], int n) {
+    for (int i = n / 2 - 1; i >= 0; i--) {
+        heapifyDown(arr, n, i);
+    }
+}
+
+void heapSort(int arr[], int n) {
+    buildMaxHeap(arr, n);
+
+    for (int i = n - 1; i > 0; i--) {
+        swap(arr, 0, i);
+
+        heapifyDown(arr, i, 0);
+    }
+}
+
+void printArray(int arr[], int n) {
+    for (int i = 0; i < n; i++)
+        cout << arr[i] << " ";
+    cout << endl;
 }
 
 int main() {
-    int n;
-    cout << "Enter a number: ";
-    cin >> n;
+    int arr[] = {64, 25, 12, 22, 11, 90, 45, 33, 7, 1};
+    int n = sizeof(arr) / sizeof(arr[0]);
 
-    cout << "\n--- Iterative ---" << endl;
-    cout << n << "! = " << factorialIterative(n) << endl;
+    cout << "Before sorting: ";
+    printArray(arr, n);
 
-    cout << "\n--- Recursive ---" << endl;
-    cout << n << "! = " << factorialRecursive(n) << endl;
+    heapSort(arr, n);
 
-    cout << "\n--- Both for 0 to 10 ---" << endl;
-    cout << "n\tIterative\tRecursive" << endl;
-    cout << "─────────────────────────────" << endl;
-    for (int i = 0; i <= 10; i++) {
-        cout << i << "\t"
-             << factorialIterative(i) << "\t\t"
-             << factorialRecursive(i) << endl;
-    }
+    cout << "After sorting:  ";
+    printArray(arr, n);
 
     return 0;
 }
